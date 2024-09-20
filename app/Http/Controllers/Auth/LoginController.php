@@ -53,13 +53,17 @@ class LoginController extends Controller
         $chksts = User::where('email', $input['email'])->first();
         if ($chksts) {
             
-        if(auth()->attempt(array('email' => $input['email'], 'password' => $input['password']))){
-            if (auth()->user()->is_type == '1') {
+        if (auth()->attempt(array('email' => $input['email'], 'password' => $input['password']))) {
+            if (session()->has('url.intended')) {
+                $intendedUrl = session()->get('url.intended');
+                session()->forget('url.intended');
+                return redirect()->to($intendedUrl);
+            } elseif (auth()->user()->is_type == '1') {
                 return redirect()->route('admin.dashboard');
-            }else if (auth()->user()->is_type == '0') {
+            } elseif (auth()->user()->is_type == '0') {
                 return redirect()->route('user.dashboard');
             }
-            }else{
+        }else{
                 return view('auth.login')
                     ->with('message','Wrong Password.');
             }
