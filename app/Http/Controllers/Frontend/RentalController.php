@@ -6,6 +6,10 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Car;
 use App\Models\Rental;
+use App\Mail\RentalDetailsToCustomer;
+use App\Mail\RentalDetailsToAdmin;
+use Illuminate\Support\Facades\Mail;
+use App\Models\User;
 
 class RentalController extends Controller
 {
@@ -33,13 +37,18 @@ class RentalController extends Controller
 
         $totalCost = $dailyRentPrice * (strtotime($request->end_date) - strtotime($request->start_date)) / (60 * 60 * 24);
 
-        Rental::create([
-            'user_id' => auth()->id(),
-            'car_id' => $request->car_id,
-            'start_date' => $request->start_date,
-            'end_date' => $request->end_date,
-            'total_cost' => $totalCost,
-        ]);
+        $rental = Rental::create([
+                'user_id' => auth()->id(),
+                'car_id' => $request->car_id,
+                'start_date' => $request->start_date,
+                'end_date' => $request->end_date,
+                'total_cost' => $totalCost,
+            ]);
+
+        Mail::to(auth()->user()->email)->send(new RentalDetailsToCustomer($rental));
+
+        $adminEmail = User::where('is_type', 1)->first()->email;
+        Mail::to($adminEmail)->send(new RentalDetailsToAdmin($rental));
 
         return redirect()->route('homepage')->with('success', 'Car rented successfully!');
     }

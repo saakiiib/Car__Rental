@@ -5,6 +5,17 @@
     <h1>Rent {{ $car->name }}</h1>
     <div class="card">
         <div class="card-body">
+
+            @if ($errors->any())
+                <div class="alert alert-danger">
+                    <ul>
+                        @foreach ($errors->all() as $error)
+                            <li>{{ $error }}</li>
+                        @endforeach
+                    </ul>
+                </div>
+            @endif
+
             <h5 class="card-title">{{ $car->brand }} {{ $car->model }}</h5>
             <p class="card-text">Year: {{ $car->year }}</p>
             <p class="card-text">Daily Rent Price: {{ $car->daily_rent_price }}</p>
