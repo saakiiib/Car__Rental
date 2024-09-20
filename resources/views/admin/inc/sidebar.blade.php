@@ -19,12 +19,5 @@
         </a>
       </li>
 
-      <li class="nav-item">
-          <a href="{{ route('admin.companyDetail') }}" class="nav-link {{ (request()->is('admin/company-details*')) ? 'active' : '' }}">
-              <i class="nav-icon fas fa-building"></i>
-              <p>Company Details</p>
-          </a>
-      </li>
-
     </ul>
   </nav>

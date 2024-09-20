@@ -52,23 +52,16 @@ class LoginController extends Controller
 
         $chksts = User::where('email', $input['email'])->first();
         if ($chksts) {
-            if ($chksts->status == 1) {
-                if(auth()->attempt(array('email' => $input['email'], 'password' => $input['password'])))
-                    {
-                        if (auth()->user()->is_type == '1') {
-                            return redirect()->route('admin.dashboard');
-                        }else if (auth()->user()->is_type == '2') {
-                            return redirect()->route('manager.dashboard');
-                        }else if (auth()->user()->is_type == '0') {
-                            return redirect()->route('user.dashboard');
-                        }
-                    }else{
-                        return view('auth.login')
-                            ->with('message','Wrong Password.');
-                    }
+            
+        if(auth()->attempt(array('email' => $input['email'], 'password' => $input['password']))){
+            if (auth()->user()->is_type == '1') {
+                return redirect()->route('admin.dashboard');
+            }else if (auth()->user()->is_type == '0') {
+                return redirect()->route('user.dashboard');
+            }
             }else{
                 return view('auth.login')
-                ->with('message','Your ID is Deactive.');
+                    ->with('message','Wrong Password.');
             }
         }else {
             return view('auth.login')
