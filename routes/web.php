@@ -36,6 +36,8 @@ Route::fallback(function () {
 Route::group(['prefix' =>'user/', 'middleware' => ['auth', 'is_user']], function(){
   
     Route::get('/dashboard', [HomeController::class, 'userHome'])->name('user.dashboard');
+    Route::get('/profile', [HomeController::class, 'userProfile'])->name('user.profile');
+    Route::put('/profile/{id}', [HomeController::class, 'updateProfile'])->name('user.update');
     Route::get('/rent/{car_id}', [RentalController::class, 'rent'])->name('user.rent');
     route::post('/rent', [RentalController::class, 'store'])->name('user.rent.store');
     Route::get('/rentals', [RentalController::class, 'index'])->name('user.rentals');

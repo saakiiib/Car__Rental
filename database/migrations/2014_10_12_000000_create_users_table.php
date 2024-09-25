@@ -17,6 +17,7 @@ return new class extends Migration
             $table->string('email')->unique();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
+            $table->longText('address')->nullable();
             $table->tinyInteger('is_type')->default(0);
             /* Users: 0=>User, 1=>Admin */
             $table->string('updated_by')->nullable();
