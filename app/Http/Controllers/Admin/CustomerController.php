@@ -7,15 +7,15 @@ use Illuminate\Http\Request;
 use App\Models\User;
 use Illuminate\Support\Facades\Hash;
 
-class AdminController extends Controller
+class CustomerController extends Controller
 {
-    public function getAdmin()
+    public function index()
     {
-        $data = User::where('is_type', '1')->orderby('id','DESC')->get();
-        return view('admin.admin.index', compact('data'));
+        $data = User::where('is_type', '0')->orderby('id','DESC')->get();
+        return view('admin.customer.index', compact('data'));
     }
 
-    public function adminStore(Request $request)
+    public function store(Request $request)
     {
         if(empty($request->name)){
             $message ="<div class='alert alert-warning'><a href='#' class='close' data-dismiss='alert' aria-label='close'>&times;</a><b>Please fill \"Username \" field..!</b></div>";
@@ -24,11 +24,6 @@ class AdminController extends Controller
         }
         if(empty($request->email)){
             $message ="<div class='alert alert-warning'><a href='#' class='close' data-dismiss='alert' aria-label='close'>&times;</a><b>Please fill \"Email \" field..!</b></div>";
-            return response()->json(['status'=> 303,'message'=>$message]);
-            exit();
-        }
-        if(empty($request->phone)){
-            $message ="<div class='alert alert-warning'><a href='#' class='close' data-dismiss='alert' aria-label='close'>&times;</a><b>Please fill \"Phone \" field..!</b></div>";
             return response()->json(['status'=> 303,'message'=>$message]);
             exit();
         }
@@ -50,14 +45,9 @@ class AdminController extends Controller
         }
         $data = new User;
         $data->name = $request->name;
-        $data->surname = $request->surname;
-        $data->phone = $request->phone;
         $data->email = $request->email;
-        $data->house_number = $request->house_number;
-        $data->street_name = $request->street_name;
-        $data->town = $request->town;
-        $data->is_type = "1";
-        $data->postcode = $request->postcode;
+        $data->address = $request->address;
+        $data->is_type = "0";
         if(isset($request->password)){
             $data->password = Hash::make($request->password);
         }
@@ -69,7 +59,7 @@ class AdminController extends Controller
         }
     }
 
-    public function adminEdit($id)
+    public function edit($id)
     {
         $where = [
             'id'=>$id
@@ -78,10 +68,9 @@ class AdminController extends Controller
         return response()->json($info);
     }
 
-    public function adminUpdate(Request $request)
+    public function update(Request $request)
     {
-
-        
+   
         if(empty($request->name)){
             $message ="<div class='alert alert-warning'><a href='#' class='close' data-dismiss='alert' aria-label='close'>&times;</a><b>Please fill \"Username \" field..!</b></div>";
             return response()->json(['status'=> 303,'message'=>$message]);
@@ -89,11 +78,6 @@ class AdminController extends Controller
         }
         if(empty($request->email)){
             $message ="<div class='alert alert-warning'><a href='#' class='close' data-dismiss='alert' aria-label='close'>&times;</a><b>Please fill \"Email \" field..!</b></div>";
-            return response()->json(['status'=> 303,'message'=>$message]);
-            exit();
-        }
-        if(empty($request->phone)){
-            $message ="<div class='alert alert-warning'><a href='#' class='close' data-dismiss='alert' aria-label='close'>&times;</a><b>Please fill \"Phone \" field..!</b></div>";
             return response()->json(['status'=> 303,'message'=>$message]);
             exit();
         }
@@ -111,16 +95,10 @@ class AdminController extends Controller
             exit();
         }
 
-
         $data = User::find($request->codeid);
         $data->name = $request->name;
-        $data->surname = $request->surname;
-        $data->phone = $request->phone;
         $data->email = $request->email;
-        $data->house_number = $request->house_number;
-        $data->street_name = $request->street_name;
-        $data->town = $request->town;
-        $data->postcode = $request->postcode;
+        $data->address = $request->address;
         if(isset($request->password)){
             $data->password = Hash::make($request->password);
         }
@@ -133,7 +111,7 @@ class AdminController extends Controller
         } 
     }
 
-    public function adminDelete($id)
+    public function delete($id)
     {
 
         if(User::destroy($id)){

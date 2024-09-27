@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
 use App\Models\User;
+use App\Models\Car;
+use App\Models\Rental;
   
 class HomeController extends Controller
 {
@@ -35,7 +37,26 @@ class HomeController extends Controller
      */
     public function adminHome(): View
     {
-        return view('admin.dashboard');
+        $totalCars = Car::count();
+        $totalAvailableCars = Car::where('availability', '1')->count();
+        $totalRentals = Rental::count();
+        $totalUsers = User::count();
+        $totalEarnings = Rental::sum('total_cost');
+        $activeRentals = Rental::where('is_cancelled', 0)
+                       ->where('start_date', '<=', now())
+                       ->where('end_date', '>=', now())
+                       ->count();
+        $canceledRentals = Rental::where('is_cancelled', 1)->count();
+        $currentMonthEarnings = Rental::whereMonth('start_date', now()->month)
+                              ->whereYear('start_date', now()->year)
+                              ->sum('total_cost');
+        $mostPopularCar = Car::withCount('rentals')
+                            ->orderBy('rentals_count', 'desc')
+                            ->first();
+        $upcomingRentals = Rental::where('start_date', '>', now())
+                            ->where('start_date', '<=', now()->addDays(7))
+                            ->count();                                     
+        return view('admin.dashboard', compact('totalCars', 'totalAvailableCars', 'totalRentals', 'totalUsers', 'totalEarnings', 'activeRentals', 'canceledRentals', 'currentMonthEarnings', 'mostPopularCar', 'upcomingRentals'));
     }
 
     public function userProfile()

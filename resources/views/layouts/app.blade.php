@@ -40,9 +40,11 @@
                         <li class="nav-item">
                             <a class="nav-link" href="{{ route('contact') }}">{{ __('Contact') }}</a>
                         </li>
+                        @auth
                         <li class="nav-item">
                             <a class="nav-link" href="{{ route('user.rentals') }}">{{ __('Rentals') }}</a>
                         </li>
+                        @endauth                       
                     </ul>
 
                     <!-- Right Side Of Navbar -->

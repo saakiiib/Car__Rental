@@ -11,10 +11,28 @@
       </li>
 
       <li class="nav-item">
-        <a href="{{route('alladmin')}}" class="nav-link {{ (request()->is('admin/new-admin*')) ? 'active' : '' }}">
-          <i class="nav-icon fas fa-th"></i>
+        <a href="{{route('allcustomer')}}" class="nav-link {{ (request()->is('admin/customer*')) ? 'active' : '' }}">
+          <i class="nav-icon fas fa-user"></i>
           <p>
-            Admin
+            Customer
+          </p>
+        </a>
+      </li>
+
+      <li class="nav-item">
+        <a href="{{route('allcar')}}" class="nav-link {{ (request()->is('admin/car*')) ? 'active' : '' }}">
+          <i class="nav-icon fas fa-car"></i>
+          <p>
+            Car
+          </p>
+        </a>
+      </li>
+
+      <li class="nav-item">
+        <a href="{{route('allrental')}}" class="nav-link {{ (request()->is('admin/rentals*')) ? 'active' : '' }}">
+          <i class="nav-icon fas fa-key"></i>
+          <p>
+            Rentals
           </p>
         </a>
       </li>

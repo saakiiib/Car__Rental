@@ -4,7 +4,6 @@ use App\Http\Controllers\Frontend\PageController;
 use Illuminate\Support\Facades\Route;
   
 use App\Http\Controllers\HomeController;
-use App\Http\Controllers\FrontendController;
 use App\Http\Controllers\Frontend\RentalController;
   
 
@@ -22,11 +21,11 @@ Route::get('/clear', function() {
   
   
 Auth::routes();
-Route::get('/', [FrontendController::class, 'index'])->name('homepage');
+Route::get('/', [PageController::class, 'index'])->name('homepage');
 route::get('/about', [PageController::class, 'about'])->name('about');
 Route::get('/contact', [PageController::class, 'contact'])->name('contact');
 
-Route::get('/dashboard', [FrontendController::class, 'dashboard'])->name('dashboard');
+Route::get('/dashboard', [PageController::class, 'dashboard'])->name('dashboard');
 
 Route::fallback(function () {
     return redirect('/');

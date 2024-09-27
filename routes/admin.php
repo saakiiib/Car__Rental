@@ -5,18 +5,19 @@ use App\Http\Controllers\HomeController;
 use App\Http\Controllers\Admin\AdminController;
 use App\Http\Controllers\Admin\CompanyDetailsController;
 use App\Http\Controllers\Admin\CarController;
-
+use App\Http\Controllers\Admin\RentalController;
+use App\Http\Controllers\Admin\CustomerController;
 
 Route::group(['prefix' =>'admin/', 'middleware' => ['auth', 'is_admin']], function(){
   
     Route::get('/dashboard', [HomeController::class, 'adminHome'])->name('admin.dashboard');
 
-    //Admin crud
-    Route::get('/new-admin', [AdminController::class, 'getAdmin'])->name('alladmin');
-    Route::post('/new-admin', [AdminController::class, 'adminStore']);
-    Route::get('/new-admin/{id}/edit', [AdminController::class, 'adminEdit']);
-    Route::post('/new-admin-update', [AdminController::class, 'adminUpdate']);
-    Route::get('/new-admin/{id}', [AdminController::class, 'adminDelete']);
+    //Customer crud
+    Route::get('/customer', [CustomerController::class, 'index'])->name('allcustomer');
+    Route::post('/customer', [CustomerController::class, 'store']);
+    Route::get('/customer/{id}/edit', [CustomerController::class, 'edit']);
+    Route::post('/customer-update', [CustomerController::class, 'update']);
+    Route::get('/customer/{id}', [CustomerController::class, 'delete']);
 
     //Car crud
     Route::get('/car', [CarController::class, 'index'])->name('allcar');
@@ -24,6 +25,8 @@ Route::group(['prefix' =>'admin/', 'middleware' => ['auth', 'is_admin']], functi
     Route::get('/car/{id}/edit', [CarController::class, 'edit']);
     Route::post('/car-update', [CarController::class, 'update']);
     Route::get('/car/{id}', [CarController::class, 'delete']);
+
+    Route::get('/rentals', [RentalController::class, 'index'])->name('allrental');
     
 });
   
